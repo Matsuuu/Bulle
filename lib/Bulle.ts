@@ -76,7 +76,6 @@ export default class Bulle {
           25 - ep.address.length
         )}Request count: ${ep.requestCount}`
       );
-      process.stdout.write(``);
       process.stdout.write(`\n`);
     });
     process.stdout.write(TerminalColors.Reset);
@@ -88,7 +87,7 @@ export default class Bulle {
 
   async runServer(): Promise<void> {
     try {
-      await fastify.listen(3000);
+      await fastify.listen(this.port);
       this.printGui();
     } catch (err) {
       console.error(TerminalColors.FgRed, err);
@@ -100,5 +99,6 @@ export default class Bulle {
     const parser = new Parser();
     const params: CommandLineParams = parser.parseParams();
     this.endpoints = params.routes;
+    this.port = params.port;
   }
 }

@@ -1,6 +1,6 @@
 import Endpoint, { EndpointProps } from "./Endpoint";
 
-const commandArgs: Array<string> = ["-r"];
+const commandArgs: Array<string> = ["-r", "-p"];
 const httpMethods = [
   "GET",
   "POST",
@@ -15,12 +15,13 @@ const httpMethods = [
 
 export interface CommandLineParams {
   routes: Array<Endpoint>;
+  port: number;
 }
 
 export default class Parser {
   args: Array<string> = [];
   argIterator: number = 0;
-  commandLineParams: CommandLineParams = { routes: [] };
+  commandLineParams: CommandLineParams = { routes: [], port: 3000 };
   commandArgPositions: Array<number> = [];
   commandsAdded: number = 0;
 
@@ -54,8 +55,15 @@ export default class Parser {
       case "-r":
         this.addRoute();
         break;
+      case "-p":
+        this.addPort();
+        break;
     }
     this.commandsAdded++;
+  }
+
+  addPort(): void {
+    this.commandLineParams.port = Number(this.args[this.argIterator + 1]);
   }
 
   addRoute() {
