@@ -3,7 +3,7 @@ export interface EndpointProps {
   method: string;
   responseCode: number;
   responseMessage: string;
-  validations: Map<String, String>;
+  validations: Object;
 }
 
 export default class Endpoint {
@@ -11,7 +11,7 @@ export default class Endpoint {
   method: string;
   responseCode: number;
   responseMessage: string;
-  validations: Map<String, String>;
+  validations: Object;
   requestCount: number = 0;
 
   constructor(props?: EndpointProps) {
@@ -19,7 +19,7 @@ export default class Endpoint {
     this.method = (props && props.method) || "GET";
     this.responseCode = (props && props.responseCode) || 200;
     this.responseMessage = (props && props.responseMessage) || "";
-    this.validations = (props && props.validations) || new Map();
+    this.validations = (props && props.validations) || {};
   }
 
   is(endpoint: Endpoint): boolean {

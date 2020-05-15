@@ -8,6 +8,8 @@ enum RouteParamType {
   responseCode = "responseCode",
   responseMessage = "responseMessage",
   responseMessageAsFile = "responseMessageAsFile",
+  validations = "validations",
+  none = "none",
 }
 
 export default class RouteParser {
@@ -16,14 +18,14 @@ export default class RouteParser {
     args.forEach((arg) => {
       const argType: RouteParamType = this.getArgType(arg);
       switch (argType) {
+        case RouteParamType.none:
+          // Do nothing
+          break;
         case RouteParamType.responseMessageAsFile:
-          fs.readFile(arg, (err, data) => {
-            if (err) {
-              console.error(err);
-              return;
-            }
-            endpoint.responseMessage = data.toString();
-          });
+          this.setResponseFromFile(endpoint, arg);
+          break;
+        case RouteParamType.validations:
+          this.setValidationsToResponse(endpoint, arg);
           break;
         default:
           // @ts-ignore
@@ -33,9 +35,29 @@ export default class RouteParser {
     return endpoint;
   }
 
+  setResponseFromFile(endpoint: Endpoint, arg: string) {
+    fs.readFile(arg, (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      endpoint.responseMessage = data.toString();
+    });
+  }
+
+  setValidationsToResponse(endpoint: Endpoint, arg: string) {
+    const validations = {};
+    const validationPairs: Array<string> = arg.split(";");
+    validationPairs.map((vp) => {
+      const [k, v] = vp.split("=");
+      validations[k] = v;
+    });
+    endpoint.validations = validations;
+  }
+
   getArgType(arg: string): RouteParamType {
     if (
-      /^[a-zA-Z]+(\/[a-z0-9]+)*(?<!\.json)$/i.test(arg) &&
+      /^[a-zA-Z-]+[\?]*[\/a-z0-9=-]*(?<!\.json)$/i.test(arg) &&
       !HttpMethodsList.includes(arg)
     ) {
       return RouteParamType.path;
@@ -52,6 +74,9 @@ export default class RouteParser {
     if (/.json/.test(arg)) {
       return RouteParamType.responseMessageAsFile;
     }
-    return RouteParamType.path;
+    if (/[\w=;]+/i.test(arg)) {
+      return RouteParamType.validations;
+    }
+    return RouteParamType.none;
   }
 }

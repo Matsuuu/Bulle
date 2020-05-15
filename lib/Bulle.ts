@@ -73,7 +73,7 @@ export default class Bulle {
       );
       process.stdout.write(
         `${background} ${TerminalColors.FgWhite} ${" ".repeat(
-          25 - ep.path.length
+          40 - ep.path.length
         )}Request count: ${ep.requestCount}`
       );
       process.stdout.write(`\n`);
