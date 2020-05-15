@@ -1,5 +1,5 @@
 export interface EndpointProps {
-  address: string;
+  path: string;
   method: string;
   responseCode: number;
   responseMessage: string;
@@ -7,22 +7,22 @@ export interface EndpointProps {
 }
 
 export default class Endpoint {
-  address: string;
+  path: string;
   method: string;
   responseCode: number;
   responseMessage: string;
   validations: Map<String, String>;
   requestCount: number = 0;
 
-  constructor(props: EndpointProps) {
-    this.address = props.address || "";
-    this.method = props.method || "GET";
-    this.responseCode = props.responseCode || 200;
-    this.responseMessage = props.responseMessage || "";
-    this.validations = props.validations || new Map();
+  constructor(props?: EndpointProps) {
+    this.path = (props && props.path) || "";
+    this.method = (props && props.method) || "GET";
+    this.responseCode = (props && props.responseCode) || 200;
+    this.responseMessage = (props && props.responseMessage) || "";
+    this.validations = (props && props.validations) || new Map();
   }
 
   is(endpoint: Endpoint): boolean {
-    return this.address === endpoint.address && this.method === endpoint.method;
+    return this.path === endpoint.path && this.method === endpoint.method;
   }
 }

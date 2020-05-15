@@ -21,14 +21,14 @@ export default class Bulle {
 
   host(): void {
     const hoster = new Hoster();
-    hoster.hostEndpoints(this.endpoints, fastify, (endpoint) =>
+    hoster.hostEndpoints(this.endpoints, fastify, (endpoint: Endpoint) =>
       this.handleEndpointHit(endpoint)
     );
   }
 
   handleEndpointHit(endpoint: Endpoint): void {
     const matchingEndpoints = this.endpoints.filter(
-      (ep) => ep.method === endpoint.method && ep.address === endpoint.address
+      (ep) => ep.method === endpoint.method && ep.path === endpoint.path
     );
     if (matchingEndpoints.length > 0) {
       matchingEndpoints[0].requestCount++;
@@ -69,11 +69,11 @@ export default class Bulle {
       process.stdout.write(
         `${background} ${TerminalColors.FgYellow} ${" ".repeat(
           8 - ep.method.length
-        )} /${ep.address}`
+        )} /${ep.path}`
       );
       process.stdout.write(
         `${background} ${TerminalColors.FgWhite} ${" ".repeat(
-          25 - ep.address.length
+          25 - ep.path.length
         )}Request count: ${ep.requestCount}`
       );
       process.stdout.write(`\n`);

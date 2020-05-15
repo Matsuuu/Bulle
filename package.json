@@ -1,15 +1,17 @@
 {
   "name": "bulle",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.2",
+  "description": "Bulle is a modern API Mocking tool runnable straight from the CLI.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Matsuuu",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^13.13.5",
     "fastify": "^2.14.1"
+  },
+  "devDependencies": {
+    "@types/node": "^13.13.5"
   }
 }

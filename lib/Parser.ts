@@ -1,22 +1,15 @@
 import Endpoint, { EndpointProps } from "./Endpoint";
+import RouteParser from "./parsers/RouteParser";
+import { HttpMethodsList } from "./enums/HttpMethods";
 
 const commandArgs: Array<string> = ["-r", "-p"];
-const httpMethods = [
-  "GET",
-  "POST",
-  "PUT",
-  "DELETE",
-  "HEAD",
-  "PATCH",
-  "OPTIONS",
-  "TRACE",
-  "CONNECT",
-];
 
 export interface CommandLineParams {
   routes: Array<Endpoint>;
   port: number;
 }
+
+const routeParser = new RouteParser();
 
 export default class Parser {
   args: Array<string> = [];
@@ -67,34 +60,11 @@ export default class Parser {
   }
 
   addRoute() {
-    const routeInfo: Array<string> = [];
-    let routeInfoIterator = this.argIterator + 1;
     let routeInfoEnd = this.commandArgPositions[this.commandsAdded + 1];
     if (!routeInfoEnd) routeInfoEnd = this.args.length;
-    while (routeInfoIterator < routeInfoEnd) {
-      routeInfo.push(this.args[routeInfoIterator]);
-      routeInfoIterator++;
-    }
-
-    const hasReturnCode: boolean = this.hasReturnCode(routeInfo);
-    const hasHttpMethod: boolean = this.hasHttpMethod(routeInfo);
-    const httpMethodPosition = this.getHttpmethodPosition(hasHttpMethod);
-    const responseCodePosition = this.getResponseCodePosition(
-      hasReturnCode,
-      hasHttpMethod
-    );
-    const responseMessagePosition: number = this.getResponseMessagePosition(
-      hasReturnCode,
-      hasHttpMethod
-    );
 
     this.commandLineParams.routes.push(
-      new Endpoint({
-        address: this.args[this.argIterator + 1],
-        method: hasHttpMethod ? this.args[httpMethodPosition] : "GET",
-        responseCode: hasReturnCode ? this.args[responseCodePosition] : 200,
-        responseMessage: this.args[responseMessagePosition],
-      } as EndpointProps)
+      routeParser.parse(this.args.slice(this.argIterator, routeInfoEnd))
     );
   }
 
@@ -133,6 +103,6 @@ export default class Parser {
   }
 
   hasHttpMethod(routeInfo: Array<string>): boolean {
-    return routeInfo.some((info: any) => httpMethods.includes(info));
+    return routeInfo.some((info: any) => HttpMethodsList.includes(info));
   }
 }
