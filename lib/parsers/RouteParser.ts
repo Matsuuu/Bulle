@@ -1,11 +1,13 @@
 import Endpoint from "../Endpoint";
 import { HttpMethodsList } from "../enums/HttpMethods";
+import fs from "fs";
 
 enum RouteParamType {
   path = "path",
   method = "method",
   responseCode = "responseCode",
   responseMessage = "responseMessage",
+  responseMessageAsFile = "responseMessageAsFile",
 }
 
 export default class RouteParser {
@@ -13,15 +15,27 @@ export default class RouteParser {
     const endpoint: Endpoint = new Endpoint();
     args.forEach((arg) => {
       const argType: RouteParamType = this.getArgType(arg);
-      // @ts-ignore
-      endpoint[argType] = arg;
+      switch (argType) {
+        case RouteParamType.responseMessageAsFile:
+          fs.readFile(arg, (err, data) => {
+            if (err) {
+              console.error(err);
+              return;
+            }
+            endpoint.responseMessage = data.toString();
+          });
+          break;
+        default:
+          // @ts-ignore
+          endpoint[argType] = arg;
+      }
     });
     return endpoint;
   }
 
   getArgType(arg: string): RouteParamType {
     if (
-      /^[a-zA-Z]+(\/[a-z0-9]+)*/i.test(arg) &&
+      /^[a-zA-Z]+(\/[a-z0-9]+)*(?<!\.json)$/i.test(arg) &&
       !HttpMethodsList.includes(arg)
     ) {
       return RouteParamType.path;
@@ -34,6 +48,9 @@ export default class RouteParser {
     }
     if (/^['({|[)]/.test(arg)) {
       return RouteParamType.responseMessage;
+    }
+    if (/.json/.test(arg)) {
+      return RouteParamType.responseMessageAsFile;
     }
     return RouteParamType.path;
   }

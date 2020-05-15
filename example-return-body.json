@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "usersAdded": 1,
+  "users": [
+    {
+      "id": 3,
+      "name": "Joe Exotic"
+    }
+  ]
+}
