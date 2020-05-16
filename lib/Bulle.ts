@@ -63,19 +63,19 @@ export default class Bulle {
           ? TerminalColors.Highlight
           : TerminalColors.Reset;
       process.stdout.write(`${background}    ➡️  `);
+      process.stdout.write(`${TerminalColors.FgCyan}[${ep.method}]`);
       process.stdout.write(
-        `${background} ${TerminalColors.FgCyan}[${ep.method}]`
+        `${TerminalColors.FgYellow} ${" ".repeat(8 - ep.method.length)} /${
+          ep.path
+        }`
       );
       process.stdout.write(
-        `${background} ${TerminalColors.FgYellow} ${" ".repeat(
-          8 - ep.method.length
-        )} /${ep.path}`
-      );
-      process.stdout.write(
-        `${background} ${TerminalColors.FgWhite} ${" ".repeat(
+        `${TerminalColors.FgWhite} ${" ".repeat(
           40 - ep.path.length
         )}Request count: ${ep.requestCount}`
       );
+      // Dirty hack to add some padding so it's nicer when it's highlighted
+      process.stdout.write(" ".repeat(5));
       process.stdout.write(`\n`);
     });
     process.stdout.write(TerminalColors.Reset);
