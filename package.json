@@ -1,6 +1,6 @@
 {
   "name": "bulle",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Bulle is a modern API Mocking tool runnable straight from the CLI.",
   "main": "./bin/cli.js",
   "bin": {

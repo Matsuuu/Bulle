@@ -4,6 +4,12 @@ Bulle is a modern solution for mocking HTTP API's.
 
 Bulle can be utilized to create mock API endpoints for development purposes or for general testing.
 
+Bulle provides:
+
+- A quick to use Mock API supporting all HTTP methods
+- Customizable response codes and bodies
+- Input validation
+
 ### Usage
 
 Bulle can be installed through npm with
