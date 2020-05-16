@@ -6,7 +6,7 @@ Bulle can be utilized to create mock API endpoints for development purposes or f
 
 ### Usage
 
-Bulle hasn't been packaged to a npm package yet, but will be usage with these commands in the future
+Bulle can be installed through npm with
 
 ```bash
 npm install -g bulle

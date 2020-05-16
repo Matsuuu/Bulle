@@ -1,10 +1,15 @@
 {
   "name": "bulle",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Bulle is a modern API Mocking tool runnable straight from the CLI.",
-  "main": "index.js",
+  "main": "./bin/cli.js",
+  "bin": {
+    "bulle": "./bin/bulle"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --build tsconfig.json",
+    "run": "./bin/bulle"
   },
   "author": "Matsuuu",
   "license": "ISC",
