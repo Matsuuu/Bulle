@@ -62,13 +62,13 @@ export default class RouteParser {
     ) {
       return RouteParamType.path;
     }
-    if (/[0-9]{3}/.test(arg)) {
+    if (/^[0-9]{3}/.test(arg)) {
       return RouteParamType.responseCode;
     }
     if (HttpMethodsList.includes(arg)) {
       return RouteParamType.method;
     }
-    if (/^['({|[)]/.test(arg)) {
+    if (/^[({|[)]/.test(arg)) {
       return RouteParamType.responseMessage;
     }
     if (/.json/.test(arg)) {
