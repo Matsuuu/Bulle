@@ -14,6 +14,9 @@ export default class Bulle {
     console.clear();
     console.log(`${TerminalColors.FgWhite}Starting up Bulle Mock server... ☕`);
     console.log("");
+    fastify.register(require("fastify-cors"), {
+      // put your options here
+    });
     this.parseParams();
     this.host();
     this.runServer();
