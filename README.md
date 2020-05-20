@@ -6,9 +6,9 @@ Bulle can be utilized to create mock API endpoints for development purposes or f
 
 Bulle provides:
 
-- A quick to use Mock API supporting all HTTP methods
-- Customizable response codes and bodies
-- Input validation
+-   A quick to use Mock API supporting all HTTP methods
+-   Customizable response codes and bodies
+-   Input validation
 
 ### Usage
 
@@ -17,6 +17,31 @@ Bulle can be installed through npm with
 ```bash
 npm install -g bulle
 ```
+
+### Parameters
+
+| Name    | Syntax            | Type           |  Description                                                                   |
+| ------- | ----------------- | -------------- | ------------------------------------------------------------------------------ |
+| Port    | `-p` or `--port`  | Number         | Specify the port in which you want to run Bulle. (Default port is 3000)        |
+| Route   | `-r` or `--route` | A route object | Specify the route properties listed below                                      |
+| Logfile | `-L` or `--logs`  | string         | Specify a log file. If you don't want to log anything, don't include this flag |
+
+#### Forming a route
+
+Creating a route for your mock API is simple. You can specify multiple parameters for each route, but these can also
+be omitted, if you don't see the need to use them all.
+
+Currently you can specify:
+
+-   The endpoint of the route
+-   The return code of the route
+-   The return body of the route
+-   Validations the route makes on input data
+
+Each of these properties has a distinct format, and will be recognizer through regex, meaning that
+the ordering of these parameters doesn't matter.
+
+See the examples below
 
 #### Examples
 
